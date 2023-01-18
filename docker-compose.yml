@@ -1,0 +1,84 @@
+version: '3.7'
+
+services:
+
+  journal-frontend:
+    build:
+      context: ./journal-frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - journal-backend
+    command: npm run dev
+    ports: 
+      - 3000:3000
+    restart: always
+    volumes:
+      - ./journal-frontend:/journal-frontend:rw
+      - ./journal-frontend/front_dist:/journal-frontend/front_dist:rw
+      - /journal-frontend/node_modules
+    environment:
+      NODE_ENV: "development"
+      CHOKIDAR_USEPOLLING: "true"
+    stdin_open: true
+
+  journal-backend:
+    build:
+      context: ./journal-backend
+      dockerfile: Dockerfile
+    depends_on:
+      journal-db:
+        condition: service_healthy
+    ports: 
+      - 3010:3010
+    restart: always
+    command: nodemon app.js
+    volumes:
+      - ./journal-backend:/journal-backend:rw
+      - ./journal-backend/dist:/journal-backend/dist:rw
+      - /journal-backend/node_modules
+    environment:
+      DB_USERNAME: "${JOURNAL_DB_USERNAME}"
+      DB_PASSWORD: "${JOURNAL_DB_PASSWORD}"
+      DB_DATABASE: "${JOURNAL_DB_DATABASE}"
+      JWT_SECRET: "${JOURNAL_JWT_SECRET}"
+      DB_HOST: "journal-db"
+
+  journal-db:
+    image: mysql
+    restart: always
+    ports: 
+      - 3306:3306
+    environment:
+      MYSQL_USER: "${JOURNAL_DB_USERNAME}"
+      MYSQL_PASSWORD: "${JOURNAL_DB_PASSWORD}"
+      MYSQL_DATABASE: "${JOURNAL_DB_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${JOURNAL_DB_PASSWORD}"
+    expose: 
+      - 3306
+    volumes:
+      - journalDB:/journalDB/db
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 5s
+      retries: 10
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - journal-frontend
+      - journal-backend
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/static:rw
+      - ./journal-frontend/front_dist:/front_dist
+    logging:
+      driver: none
+
+volumes:
+  journalDB:
