@@ -13,17 +13,13 @@ export function UserContextProvider({ children }) {
                 }
             }
             const verify = await fetch('/api/user/verify', options);
-            console.log(verify)
             if (verify.status == 401) {
                 return;
             }
             const data = await verify.json();
-            console.log(data);
             if (data.status == 201) {
                 return;
             }
-
-
             setUserData({username: data.username, data: data.data})
         }
         updateData();

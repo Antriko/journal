@@ -4,8 +4,6 @@ import { BiDroplet } from "react-icons/bi"
 import { MdOutlineShower } from "react-icons/md"
 import { TbMoodNeutral, TbMoodSmile, TbMoodSad } from "react-icons/tb";
 import { IoNutritionOutline, IoBicycleOutline } from "react-icons/io5";
-import { isTemplateExpression } from "typescript";
-
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -14,6 +12,7 @@ function classNames(...classes: string[]) {
 export default function EntryPage() {
     const [entry, setEntry] = useState({entry: null})
     const [additional, setAdditional] = useState({entry: null})
+    const [date, setDate] = useState({date: 0})
     
     const selectEntry = (event, key) => {
         console.log(event.currentTarget, key)
@@ -24,6 +23,20 @@ export default function EntryPage() {
     const selectAdditional = (event, key) => {
         console.log(event.currentTarget, key)
         setAdditional({entry: key})
+    }
+
+    const selectDate = (event, key) => {
+        console.log(event.currentTarget, key)
+        setDate({date: key})
+    }
+
+    const HandleSubmit = async (event) => {
+        event.preventDefault();
+        const data = {
+            // username: event.target.username.value,
+            // password: event.target.password.value
+        }
+        console.log('Form submission')
     }
     
     const sleepInfo = () => {
@@ -74,7 +87,7 @@ export default function EntryPage() {
         ]
         return(
             moods.map(mood => {
-                const selected = (mood.name == additional.entry) ? 'bg-gray-300 border-black' : '';
+                var selected = (mood.name == additional.entry) ? 'bg-gray-300 border-black' : '';
                 return (
                     <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-gray-100 shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={mood.name} onClick={e => selectAdditional(e, mood.name)}>
                         <div className="text-center font-bold text-2xl">
@@ -86,6 +99,41 @@ export default function EntryPage() {
                     </div>
                 )
             })
+        )
+    }
+
+    
+    const timeSelection = () => {
+        return(<></>)
+    }
+    const calendarSelection = () => {
+        const weekday = ["Sun","Mon","Tue","Wed","Thur","Fri","Sat"];
+        return(
+            <div className="flex bg-white shadow-md justify-start md:justify-center rounded-lg mx-auto py-4 px-2 md:mx-12 flex-row-reverse">
+                {[...Array(7)].map( (_, i) => {
+                    var currentDate = new Date();
+                    currentDate.setDate(currentDate.getDate() - i)
+                    var selected = (date.date == i) ? 'bg-gray-300 border-black' : '';
+                    return(
+                        <div key={i} className={classNames(selected, "flex group hover:bg-gray-200 hover:shadow-lg hover-dark-shadow rounded-lg mx-1 transition-all duration-300 cursor-pointer justify-center w-16")} onClick={e => selectDate(e, i)}>
+                            <div className="flex items-center px-4 py-4">
+                                <div className="text-center">
+                                    <p className="text-gray-900 text-sm transition-all duration-300">{weekday[currentDate.getDay()]}</p>
+                                    <p className="text-gray-900 mt-3 transition-all	duration-300">{currentDate.getDate()}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+    
+    const confirmButton = () => {
+        return(
+            <button className="w-1/6 px-4 py-2 m-2 bg-gray-100 hover:bg-gray-200 hover:shadow-lg hover-dark-shadow rounded-lg mx-1 transition-all duration-300 cursor-pointer text-xl" onClick={HandleSubmit}>
+                Confirm
+            </button>    
         )
     }
 
@@ -103,6 +151,7 @@ export default function EntryPage() {
 
     return (
         <div className="flex flex-col min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            {calendarSelection()}
             <div className="w-full max-w-md space-y-8 mb-4">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
@@ -113,7 +162,7 @@ export default function EntryPage() {
 
             <div className="flex items-center justify-center w-3/4">
                 {entries.map(item => {
-                    const selected = (item.name == entry.entry) ? 'bg-gray-300 border-black' : '';
+                    var selected = (item.name == entry.entry) ? 'bg-gray-300 border-black' : '';
                     return(
                         <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-gray-100 shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={item.name} onClick={e => selectEntry(e, item.name)}>
                             <div className="text-center font-bold text-2xl">
@@ -135,7 +184,7 @@ export default function EntryPage() {
                     </div>
                 ) 
             })}
-
+            {confirmButton()}
         </div>
     )
 }
