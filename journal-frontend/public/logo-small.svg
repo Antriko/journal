@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-192.988 -248.865 471.787 698.019" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(0.471698, 0, 0, 0.471698, -192.94368, -249.855255)">
+    <svg viewBox="0 0 95 141" data-background-color="#ffffff" preserveAspectRatio="xMidYMid meet" height="1484" width="1000" xmlns="http://www.w3.org/2000/svg">
+      <g id="tight-bounds" transform="matrix(1,0,0,1,-0.01565085227275631,0.19949999999997203)">
+        <svg viewBox="0 0 95.03130170454546 140.60052000000002" height="140.60052000000002" width="95.03130170454546">
+          <g>
+            <svg viewBox="0 0 95.03130170454546 140.60052000000002" height="140.60052000000002" width="95.03130170454546">
+              <g>
+                <svg viewBox="0 0 95.03130170454546 140.60052000000002" height="140.60052000000002" width="95.03130170454546">
+                  <g>
+                    <path d="M0 140.601v-140.601h95.031v140.601z" fill="#528265" stroke="transparent" stroke-width="0" rx="0%" data-fill-palette-color="tertiary"/>
+                    <path d="M3.283 137.317v-134.034h88.465v134.034z" fill="#ffffff" stroke="transparent" stroke-width="0" rx="0%" data-fill-palette-color="quaternary"/>
+                    <path d="M9.85 130.751v-120.901h75.331v120.901z" fill="#528265" stroke="transparent" stroke-width="0" data-fill-palette-color="tertiary"/>
+                  </g>
+                  <g transform="matrix(1,0,0,1,19.69974,19.69974)">
+                    <svg viewBox="0 0 55.63182170454546 101.20104" height="101.20104" width="55.63182170454546">
+                      <g>
+                        <svg viewBox="0 0 55.63182170454546 101.20104" height="101.20104" width="55.63182170454546">
+                          <g transform="matrix(1,0,0,1,0,0)">
+                            <svg width="55.63182170454546" viewBox="2.049999952316284 -34.849998474121094 19.350000381469727 35.19999694824219" height="101.20104" data-palette-color="#ffffff">
+                              <path d="M16.8-34.85L21.4-34.85 21.4-9.1Q21.4-4.8 18.75-2.23 16.1 0.35 11.75 0.35L11.75 0.35Q7.35 0.35 4.7-2.27 2.05-4.9 2.05-9.45L2.05-9.45 6.6-9.45Q6.65-6.9 7.93-5.3 9.2-3.7 11.75-3.7L11.75-3.7Q14.3-3.7 15.55-5.23 16.8-6.75 16.8-9.1L16.8-9.1 16.8-34.85Z" opacity="1" transform="matrix(1,0,0,1,0,0)" fill="#ffffff" class="undefined-text-0" data-fill-palette-color="quaternary" id="text-0"/>
+                            </svg>
+                          </g>
+                        </svg>
+                      </g>
+                    </svg>
+                  </g>
+                </svg>
+              </g>
+              <g/>
+            </svg>
+          </g>
+        </svg>
+        <rect width="95.03130170454546" height="140.60052000000002" fill="none" stroke="none" visibility="hidden"/>
+      </g>
+    </svg>
+  </g>
+</svg>
