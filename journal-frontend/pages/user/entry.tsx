@@ -104,7 +104,13 @@ export default function EntryPage() {
 
     
     const timeSelection = () => {
-        return(<></>)
+        return(
+                <input 
+                    className="relative block w-full appearance-none rounded-md align-right border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-600 focus:z-10 focus:border-gray-600 focus:outline-none focus:ring-gray-900 sm:text-sm" 
+                    type="time"
+                    required
+                />
+            )
     }
     const calendarSelection = () => {
         const weekday = ["Sun","Mon","Tue","Wed","Thur","Fri","Sat"];
@@ -184,6 +190,9 @@ export default function EntryPage() {
                     </div>
                 ) 
             })}
+            <div className="w-1/12 justify-center">
+                {timeSelection()}
+            </div>
             {confirmButton()}
         </div>
     )
