@@ -60,10 +60,8 @@ services:
       context: ./nginx
       dockerfile: Dockerfile.prod
     depends_on:
-      - backend
-      - frontend
-      - portfolio
-      - quiz
+      - journal-backend
+      - journal-frontend
     ports:
       - 80:80
       - 443:443
