@@ -42,7 +42,7 @@ services:
       JOURNAL_JWT_SECRET: "${JOURNAL_JWT_SECRET}"
       JOURNAL_DB_SERVICE_NAME: "journal-db"
 
-  db:
+  journal-db:
     image: mongo:latest
     ports:
       # 27018 for mongodb compass
