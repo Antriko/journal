@@ -14,11 +14,14 @@ export default function EntryPage() {
     const [additional, setAdditional] = useState({})
     const [date, setDate] = useState({date: 0})
     const [isComplete, setComplete] = useState(false);
+    const [message, setMessage] = useState("");
+    const [submitted, setSubmitted] = useState(false);
     
     const selectEntry = (event, key) => {
         console.log(event.currentTarget, key)
         setEntry({entry: key})
         setComplete(false);
+        setSubmitted(false);
         // Auto scroll down?
     }
 
@@ -28,37 +31,41 @@ export default function EntryPage() {
         tmp[key] = event.currentTarget.value;
         setAdditional(tmp)
         setComplete(true);
+        setSubmitted(false);
 
         console.log(tmp)
     }
 
     const multipleChoice = (event, key) => {
         console.log(event.currentTarget.value, key)
-        var tmp = additional;
-        tmp["entry"] = key;
-        setAdditional(tmp)
+        setAdditional({entry: key})
         setComplete(true);
-
-        console.log(tmp)
-
+        setSubmitted(false);
     }
 
     const selectDate = (event, key) => {
         console.log(event.currentTarget, key)
+        
+        setEntry({entry: null})
+        setSubmitted(false);
+        setComplete(false);
         setDate({date: key})
     }
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
-        if (!entry) return;
-
+        
+        // Make sure all additional data is filled in
+        var keys = Object.keys(additional);
+        if (!entry || !keys.every(i => additional[i] != null)) return;
+        
         const data = {
             type: entry.entry,
             additional: additional,
             date: date.date,
         }
         console.log('Form submission', entry, additional, date, isComplete)
-
+        
         const options = {
             method: 'POST',
             headers: {
@@ -66,9 +73,15 @@ export default function EntryPage() {
             },
             body: JSON.stringify(data)
         }
+        setSubmitted(true);
         const response = await fetch('/api/journal/entry', options)
         const respData = await response.json();
         console.log(response, respData)
+        if (response.status == 200) {
+            setMessage("Entry created");
+            return;
+        }
+        setMessage(respData.message);
     }
     
     const sleepInfo = () => {
@@ -188,20 +201,18 @@ export default function EntryPage() {
         )
     }
     const moodInfo = () => {
-        if (!isComplete) {
-            setComplete(true);
-            setAdditional({entry: null})
-        }
         const moods = [
             {name: "happy", icon: () => {return <TbMoodSmile className="w-full h-full" />}},
             {name: "neutral", icon: () => {return <TbMoodNeutral className="w-full h-full" />}},
             {name: "sad", icon: () => {return <TbMoodSad className="w-full h-full" />}},
         ]
+        console.log(moods)
         return(
             moods.map(mood => {
+                console.log("Mood", mood, mood.name, additional.entry)
                 var selected = (mood.name == additional.entry) ? 'bg-gray-300 border-black' : '';
                 return (
-                    <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-gray-100 shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={mood.name} onClick={e => multipleChoice(e, mood.name)}>
+                    <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-white shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={mood.name} onClick={e => multipleChoice(e, mood.name)}>
                         <div className="text-center font-bold text-2xl">
                             {mood.name}
                         </div>
@@ -261,11 +272,22 @@ export default function EntryPage() {
     }
     
     const confirmButton = () => {
-        if (!isComplete) return;
+        console.log(isComplete, submitted)
+        if (!isComplete || submitted) return;
+        console.log("Show button")
         return(
-            <button className="w-1/6 px-4 py-2 m-2 bg-gray-100 hover:bg-gray-200 hover:shadow-lg hover-dark-shadow rounded-lg mx-1 transition-all duration-300 cursor-pointer text-xl" type="submit">
+            <button className="w-1/6 px-4 py-2 m-2 bg-white hover:bg-gray-200 hover:shadow-lg hover-dark-shadow rounded-lg mx-1 transition-all duration-300 cursor-pointer text-xl" type="submit">
                 Confirm
             </button>    
+        )
+    }
+
+    const displayMessage = () => {
+        if (!submitted) return;
+        return(
+            <div className="w-full m-2 text-center text-xl">
+                {message}
+            </div>    
         )
     }
 
@@ -278,7 +300,7 @@ export default function EntryPage() {
         {name: "Shower", icon: () => {return <MdOutlineShower className="w-full h-full"/>}, additonal: showerInfo,},
         {name: "Excercise", icon: () => {return <IoBicycleOutline className="w-full h-full"/>}, additonal: excerciseInfo,},
         {name: "Mood", icon: () => {return <TbMoodNeutral className="w-full h-full"/>}, additonal: moodInfo,},
-        // Brushing teeth, medication, mindfulness
+        // Future additions - Brushing teeth, medication, mindfulness ect
     ]
 
     return (
@@ -296,7 +318,7 @@ export default function EntryPage() {
                 {entries.map(item => {
                     var selected = (item.name == entry.entry) ? 'bg-gray-300 border-black' : '';
                     return(
-                        <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-gray-100 shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={item.name} onClick={e => selectEntry(e, item.name)}>
+                        <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-white shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={item.name} onClick={e => selectEntry(e, item.name)}>
                             <div className="text-center font-bold text-2xl">
                                 {item.name}
                             </div>
@@ -317,6 +339,7 @@ export default function EntryPage() {
                 ) 
             })}
             {confirmButton()}
+            {displayMessage()}
         </form>
     )
 }

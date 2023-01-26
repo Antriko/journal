@@ -12,7 +12,7 @@ const navItems = [
 ]
 
 const userItems = [
-    {name: "Profile", href: "/profile"},
+    {name: "Profile", href: "/user"},
     {name: "Sign out", href: "/logout"}
 ]
 
@@ -23,7 +23,10 @@ function classNames(...classes: string[]) {
 const Navbar = () => {
     const userData = useContext(UserContext);
     const userBar = userData.username ? <>
-        <Menu as="div" className="relative ml-3">
+        <div className="w-full text-white text-right">
+            {userData.username}
+        </div>
+        <Menu as="div" className="relative ml-3 w-full">
             <div>
                 <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">Open user menu</span>
@@ -48,7 +51,7 @@ const Navbar = () => {
                         return(
                             <Menu.Item key={item.name}>
                             {({ active }) => (
-                                <a href={item.href} className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>
+                                <a href={item.href} className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700')}>
                                     {item.name}
                                 </a>
                             )}
@@ -87,7 +90,7 @@ const Navbar = () => {
                     </div>
                     
                     {/* Right Items */}
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 w-1/6">
                         {userBar}
                     </div>
 

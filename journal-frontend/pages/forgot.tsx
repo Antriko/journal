@@ -15,6 +15,11 @@ export default function Login() {
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
+        console.log(event.target.password.value, event.target.confirmpassword.value)
+        if (event.target.password.value !== event.target.confirmpassword.value) {
+            setMessage({message: true, text: "Passwords do not match"});
+            return;
+        }
         const data = {
             username: event.target.username.value,
             password: event.target.password.value
@@ -28,14 +33,10 @@ export default function Login() {
             },
             body: JSON.stringify(data)
         }
-        const response = await fetch('/api/user/create', options)
+        const response = await fetch('/api/user/forgot', options)
         const respData = await response.json();
         console.log(response, respData)
         
-        if (response.status == 200) {
-            router.reload();
-            router.push('/')
-        }
         setMessage({message: true, text: respData.text})
 
         console.log("RESULTS", response)
@@ -72,10 +73,10 @@ export default function Login() {
                                 placeholder="Password" />
                         </div>
                         <div>
-                            <label htmlFor="confirm-password" className="sr-only">
+                            <label htmlFor="confirmpassword" className="sr-only">
                                 Confirm Password
                             </label>
-                            <input id="confirm-password" name="confirm-password" type="password" autoComplete='new-password' required
+                            <input id="confirmpassword" name="confirmpassword" type="password" autoComplete='new-password' required
                                 className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-600 focus:z-10 focus:border-gray-600 focus:outline-none focus:ring-gray-900 sm:text-sm"
                                 placeholder="Confirm Password" />
                         </div>
@@ -97,7 +98,7 @@ export default function Login() {
                     <div>
                         <button type="submit"
                             className="group relative flex w-full justify-center rounded-md border border-transparent bg-gray-900 py-2 px-4 text-sm font-medium text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">
-                            Register
+                            Reset
                         </button>
                     </div>
 

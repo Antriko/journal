@@ -60,6 +60,21 @@ router.post('/login', async(req, res) => {
     }
 })
 
+router.post('/forgot', async (req, res) => {
+    console.log(req.body)
+    var user = mongoose.model('User', userSchema);  // Get database
+    var newPass = await bcrypt.hash(req.body.password, saltRounds)
+    console.log(newPass)
+    var doc = await user.findOneAndUpdate({username: req.body.username}, {
+        password: newPass
+    })
+    if (!doc) {
+        res.status(201).send({text: "No user found"});
+        return;
+    }
+    res.status(200).send({text: "Password changed"});
+})
+
 router.get('/logout', (req, res) => {
     req.session.destroy();
     res.clearCookie("userInfo")

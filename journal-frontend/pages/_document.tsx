@@ -7,7 +7,7 @@ export default function Document() {
             <Head>
                 <title>Journapp</title>
             </Head>
-            <body>
+            <body className="bg-gray-100">
                 <Main />
                 <NextScript />
             </body>

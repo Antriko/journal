@@ -45,7 +45,8 @@ services:
   journal-db:
     image: mongo:latest
     ports:
-      - 27017:27017
+      # 27018 for mongodb compass
+      - 27018:27017
     restart: always
     volumes:
       - mongodb_data_container:/data/db

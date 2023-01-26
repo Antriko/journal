@@ -28,12 +28,11 @@ export default function Login() {
             },
             body: JSON.stringify(data)
         }
-        const response = await fetch('/api/user/register', options)
+        const response = await fetch('/api/user/create', options)
         const respData = await response.json();
         console.log(response, respData)
         
         if (response.status == 200) {
-            router.reload();
             router.push('/')
         }
         setMessage({message: true, text: respData.text})
