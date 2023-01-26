@@ -38,6 +38,10 @@ app.use(session({
 var user = require('./user.js');
 app.use('/api/user', user)
 
+// journal rest api
+var journal = require('./journal.js');
+app.use('/api/journal', journal)
+
 // static image hosting
 app.use("/api/images/", express.static("./images"))
 

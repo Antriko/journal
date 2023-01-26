@@ -11,18 +11,36 @@ function classNames(...classes: string[]) {
 
 export default function EntryPage() {
     const [entry, setEntry] = useState({entry: null})
-    const [additional, setAdditional] = useState({entry: null})
+    const [additional, setAdditional] = useState({})
     const [date, setDate] = useState({date: 0})
+    const [isComplete, setComplete] = useState(false);
     
     const selectEntry = (event, key) => {
         console.log(event.currentTarget, key)
         setEntry({entry: key})
+        setComplete(false);
         // Auto scroll down?
     }
 
     const selectAdditional = (event, key) => {
-        console.log(event.currentTarget, key)
-        setAdditional({entry: key})
+        console.log(event.currentTarget.value, key)
+        var tmp = additional;
+        tmp[key] = event.currentTarget.value;
+        setAdditional(tmp)
+        setComplete(true);
+
+        console.log(tmp)
+    }
+
+    const multipleChoice = (event, key) => {
+        console.log(event.currentTarget.value, key)
+        var tmp = additional;
+        tmp["entry"] = key;
+        setAdditional(tmp)
+        setComplete(true);
+
+        console.log(tmp)
+
     }
 
     const selectDate = (event, key) => {
@@ -32,54 +50,148 @@ export default function EntryPage() {
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
+        if (!entry) return;
+
         const data = {
-            // username: event.target.username.value,
-            // password: event.target.password.value
+            type: entry.entry,
+            additional: additional,
+            date: date.date,
         }
-        console.log('Form submission')
+        console.log('Form submission', entry, additional, date, isComplete)
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+        const response = await fetch('/api/journal/entry', options)
+        const respData = await response.json();
+        console.log(response, respData)
     }
     
     const sleepInfo = () => {
+        // if slept is higher than woke, then slept is day before
+        // if slept is lower than woke, then slept is same day
+        if (!isComplete) {
+            setComplete(true);
+            setAdditional({started: null, finished: null})
+        }
         return(
-            <div>
-                Sleep time
-                Wake up time
-                Show how long slept for
+            <div className="flex flex-col w-3/4 justify-center items-center">
+                <div className="w-1/4 justify-center mx-1 flex flex-row mb-3">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Time slept
+                    </div>
+                    <div className="w-1/2 pl-2">
+                        {timeSelection("started")}
+                    </div>
+                </div>
+                <div className="w-1/4 justify-center mx-1 flex flex-row">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Time woken
+                    </div>
+                    <div className="w-1/2 pl-2">
+                        {timeSelection("finished")}
+                    </div>
+                </div>
             </div>
         )
     }
     const eatInfo = () => {
+        if (!isComplete) {
+            setComplete(true);
+            setAdditional({started: null, input: null})
+        }
         return(
-            <div>
-                What time eat
-                Snack/Dinner
-                Calories
+            <div className="flex flex-col w-3/4 justify-center items-center">
+                <div className="w-1/4 justify-center mx-1 flex flex-row mb-3">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Time ate
+                    </div>
+                    <div className="w-1/2 pl-2">
+                        {timeSelection("started")}
+                    </div>
+                </div>
+                <div className="w-1/4 justify-center mx-1 flex flex-row">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Calories
+                    </div>
+                    <div className="w-1/2 pl-2">
+                        {userInput()}
+                    </div>
+                </div>
             </div>
         )
     }
     const hydrateInfo = () => {
+        if (!isComplete) {
+            setComplete(true);
+            setAdditional({input: null})
+        }
         return(
-            <div>
-                How many liters
+            <div className="flex flex-col w-3/4 justify-center items-center">
+                <div className="w-1/2 mx-1 flex flex-row">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Milliliters drank
+                    </div>
+                    <div className="w-1/4 pl-2">
+                        {userInput()}
+                    </div>
+                </div>
             </div>
         )
     }
     const showerInfo = () => {
+        if (!isComplete) {
+            setComplete(true);
+            setAdditional({started: null})
+        }
         return(
-            <div>
-                What time showered
-                How long for
+            <div className="flex flex-col w-3/4 justify-center items-center">
+                <div className="w-1/2 mx-1 flex flex-row">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Time showered
+                    </div>
+                    <div className="w-1/4 pl-2">
+                        {timeSelection("started")}
+                    </div>
+                </div>
             </div>
         )
     }
     const excerciseInfo = () => {
+        if (!isComplete) {
+            setComplete(true);
+            setAdditional({started: null, input: null})
+        }
         return(
-            <div>
-                How long for
+            <div className="flex flex-col w-3/4 justify-center items-center">
+                <div className="w-1/2 mx-1 flex flex-row mb-3">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        Time excercised
+                    </div>
+                    <div className="w-1/4 pl-2">
+                        {timeSelection("started")}
+                    </div>
+                </div>
+                <div className="w-1/2 mx-1 flex flex-row">
+                    <div className="w-1/2 text-right pr-2 text-xl">
+                        How long for
+                    </div>
+                    <div className="w-1/4 pl-2">
+                        {userInput()}
+                    </div>
+                </div>
             </div>
         )
     }
     const moodInfo = () => {
+        if (!isComplete) {
+            setComplete(true);
+            setAdditional({entry: null})
+        }
         const moods = [
             {name: "happy", icon: () => {return <TbMoodSmile className="w-full h-full" />}},
             {name: "neutral", icon: () => {return <TbMoodNeutral className="w-full h-full" />}},
@@ -89,7 +201,7 @@ export default function EntryPage() {
             moods.map(mood => {
                 var selected = (mood.name == additional.entry) ? 'bg-gray-300 border-black' : '';
                 return (
-                    <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-gray-100 shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={mood.name} onClick={e => selectAdditional(e, mood.name)}>
+                    <div className={classNames(selected, "w-1/6 mx-2 py-4 px-8 bg-gray-100 shadow-lg rounded-lg my-4 ease-out duration-200 transition-all hover:bg-gray-200")} key={mood.name} onClick={e => multipleChoice(e, mood.name)}>
                         <div className="text-center font-bold text-2xl">
                             {mood.name}
                         </div>
@@ -103,11 +215,13 @@ export default function EntryPage() {
     }
 
     
-    const timeSelection = () => {
+    const timeSelection = (id) => {
         return(
                 <input 
+                    id={id}
                     className="relative block w-full appearance-none rounded-md align-right border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-600 focus:z-10 focus:border-gray-600 focus:outline-none focus:ring-gray-900 sm:text-sm" 
                     type="time"
+                    onChange={e => selectAdditional(e, id)}
                     required
                 />
             )
@@ -134,10 +248,22 @@ export default function EntryPage() {
             </div>
         )
     }
+    const userInput = () => {
+        return(
+            <input 
+                id="input"
+                className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-600 focus:z-10 focus:border-gray-600 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                type={"number"}
+                onChange={e => selectAdditional(e, "input")}
+                required
+            />
+        )
+    }
     
     const confirmButton = () => {
+        if (!isComplete) return;
         return(
-            <button className="w-1/6 px-4 py-2 m-2 bg-gray-100 hover:bg-gray-200 hover:shadow-lg hover-dark-shadow rounded-lg mx-1 transition-all duration-300 cursor-pointer text-xl" onClick={HandleSubmit}>
+            <button className="w-1/6 px-4 py-2 m-2 bg-gray-100 hover:bg-gray-200 hover:shadow-lg hover-dark-shadow rounded-lg mx-1 transition-all duration-300 cursor-pointer text-xl" type="submit">
                 Confirm
             </button>    
         )
@@ -156,7 +282,7 @@ export default function EntryPage() {
     ]
 
     return (
-        <div className="flex flex-col min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <form className="flex flex-col min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8" onSubmit={HandleSubmit}>
             {calendarSelection()}
             <div className="w-full max-w-md space-y-8 mb-4">
                 <div>
@@ -190,10 +316,7 @@ export default function EntryPage() {
                     </div>
                 ) 
             })}
-            <div className="w-1/12 justify-center">
-                {timeSelection()}
-            </div>
             {confirmButton()}
-        </div>
+        </form>
     )
 }
