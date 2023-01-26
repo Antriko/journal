@@ -5,13 +5,12 @@ services:
   journal-frontend:
     build:
       context: ./journal-frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
+    command: npm run build
     depends_on:
       - journal-backend
-    command: npm run dev
     ports: 
       - 3000:3000
-    restart: always
     volumes:
       - ./journal-frontend:/journal-frontend:rw
       - ./journal-frontend/front_dist:/journal-frontend/front_dist:rw
@@ -41,12 +40,11 @@ services:
       JOURNAL_DB_DATABASE: "${JOURNAL_DB_DATABASE}"
       JOURNAL_JWT_SECRET: "${JOURNAL_JWT_SECRET}"
       JOURNAL_DB_SERVICE_NAME: "journal-db"
-
+    
   db:
     image: mongo:latest
     ports:
-      # 27018 for mongodb compass
-      - 27018:27017
+      - 27017:27017
     restart: always
     volumes:
       - mongodb_data_container:/data/db
@@ -60,20 +58,23 @@ services:
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     depends_on:
-      - journal-frontend
-      - journal-backend
+      - backend
+      - frontend
+      - portfolio
+      - quiz
     ports:
       - 80:80
       - 443:443
     restart: always
     volumes:
-      - ./nginx/dev/nginx.conf:/etc/nginx/nginx.conf
-      - ./static:/static:rw
+      - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/crontab.txt:/crontab.txt
+      - ./certs/conf:/etc/letsencrypt
       - ./journal-frontend/front_dist:/front_dist
-    logging:
-      driver: none
+    # logging:
+      # driver: "none"
 
 volumes:
   mongodb_data_container:

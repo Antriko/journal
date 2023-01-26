@@ -1,16 +1,17 @@
 import { UserContext } from '@/context/UserContext';
 import { useContext } from 'react';
+import Link from "next/link"
 
 export default function Home() {
     const userData = useContext(UserContext);
 
     const indexButton = userData.username ? 
-        <a href="/user" className="inline-block rounded-lg bg-gray-900 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-gray-600 hover:bg-gray-700 hover:ring-indigo-700">
+        <Link href="/user" className="inline-block rounded-lg bg-gray-900 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-gray-600 hover:bg-gray-700 hover:ring-indigo-700">
             Entries <span className="text-indigo-200" aria-hidden="true">&rarr;</span>
-        </a> :
-        <a href="/login" className="inline-block rounded-lg bg-gray-900 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-gray-600 hover:bg-gray-700 hover:ring-indigo-700">
+        </Link> :
+        <Link href="/login" className="inline-block rounded-lg bg-gray-900 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-gray-600 hover:bg-gray-700 hover:ring-indigo-700">
             Get started <span className="text-indigo-200" aria-hidden="true">&rarr;</span>
-        </a>
+        </Link>
     return (
         <main>
             <div className="relative px-6 lg:px-8">

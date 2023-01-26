@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react"
 import { HiOutlineMoon } from "react-icons/hi2"
 import { BiDroplet } from "react-icons/bi"

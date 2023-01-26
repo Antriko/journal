@@ -1,6 +1,7 @@
 // Change items depending on if user is logged in or not.
 import { useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
+import Link from "next/link"
 
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
@@ -31,7 +32,7 @@ const Navbar = () => {
                 <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">Open user menu</span>
                     {/* Profile Pic */}
-                    <img className="h-8 w-8 rounded-full"
+                    <Image className="h-8 w-8 rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt=""
                     />
@@ -51,9 +52,9 @@ const Navbar = () => {
                         return(
                             <Menu.Item key={item.name}>
                             {({ active }) => (
-                                <a href={item.href} className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700')}>
+                                <Link href={item.href} className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700')}>
                                     {item.name}
-                                </a>
+                                </Link>
                             )}
                         </Menu.Item>
                         )
@@ -61,7 +62,7 @@ const Navbar = () => {
                 </Menu.Items>
             </Transition>
         </Menu>
-    </> : <a key="login" href="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+    </> : <Link key="login" href="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</Link>
 
 
     return (
@@ -80,9 +81,9 @@ const Navbar = () => {
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 {navItems.map(item => {
-                                    return <a key={item.name} href={item.href} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                    return <Link key={item.name} href={item.href} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                                         {item.name}
-                                    </a>
+                                    </Link>
                                 })}
                             </div>
                         </div>

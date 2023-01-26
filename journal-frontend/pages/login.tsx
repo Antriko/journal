@@ -1,8 +1,10 @@
+// @ts-nocheck
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
 import Image from 'next/image'
+import Link from "next/link"
 
 export default function Login() {
 
@@ -96,15 +98,15 @@ export default function Login() {
 
                     <div className="inline-flex flex-col text-right w-full">
                         <div className="text-sm">
-                            <a href="/forgot" className="font-medium text-gray-900 hover:text-gray-600">
+                            <Link href="/forgot" className="font-medium text-gray-900 hover:text-gray-600">
                                 Forgot your password?
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="text-sm">
-                            <a href="/register" className="font-medium text-gray-900 hover:text-gray-600">
+                            <Link href="/register" className="font-medium text-gray-900 hover:text-gray-600">
                                 Create account
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </form>

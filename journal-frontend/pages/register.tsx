@@ -1,7 +1,10 @@
+// @ts-nocheck
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
+import Image from 'next/image'
+import Link from "next/link"
 
 export default function Login() {
 
@@ -45,8 +48,7 @@ export default function Login() {
         <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
                 <div>
-                    <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company" />
+                    <Image alt="logo" src="/logo.svg" width={500} height={200}  />
                     <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
                         Create account
                     </h2>
@@ -102,15 +104,15 @@ export default function Login() {
 
                     <div className="inline-flex flex-col text-right w-full">
                         <div className="text-sm">
-                            <a href="/login" className="font-medium text-gray-900 hover:text-gray-600">
+                            <Link href="/login" className="font-medium text-gray-900 hover:text-gray-600">
                                 Already got an account?
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="text-sm">
-                            <a href="/forgot" className="font-medium text-gray-900 hover:text-gray-600">
+                            <Link href="/forgot" className="font-medium text-gray-900 hover:text-gray-600">
                                 Forgot your password?
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </form>
