@@ -13,7 +13,7 @@ services:
       - 3000:3000
     volumes:
       - ./journal-frontend:/journal-frontend:rw
-      - ./journal-frontend/front_dist:/journal-frontend/front_dist:rw
+      - ./journal-frontend/.next:/journal-frontend/.next:rw
       - /journal-frontend/node_modules
     environment:
       NODE_ENV: "development"
