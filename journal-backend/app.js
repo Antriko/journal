@@ -43,7 +43,7 @@ var journal = require('./journal.js');
 app.use('/api/journal', journal)
 
 // static image hosting
-app.use("/api/images/", express.static("./images"))
+app.use("/api/images/", express.static("./public/images"))
 
 const PORT = 3010;
 app.listen(PORT);
