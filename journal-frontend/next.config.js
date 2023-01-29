@@ -20,6 +20,7 @@ module.exports = {
         ignoreBuildErrors: true,
     },
     images: {
-        domains: ['localhost']
-    }
+        domains: ['localhost'],
+        unoptimized: true
+    },
   }
