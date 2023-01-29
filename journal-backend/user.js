@@ -39,25 +39,22 @@ router.post('/create', async(req, res) => {
 router.post('/login', async(req, res) => {
     console.log('Login')
     console.log(req.body, req.session)
+
     let user = mongoose.model('User', userSchema);  // Get database
     var doc = await user.findOne({username: req.body.username});
-    if(doc) {  // Found a user
-        bcrypt.compare(req.body.password, doc.password)    // Compare encrypted password to plaintext password
-        .then(result => {
-            if(result) {    // Correct password
-                req.session.userInfo = {
-                    id: doc.id, 
-                    username: req.body.username
-                };
 
-                res.status(200).send({username: doc.username, basket: doc.basket})
-            } else {    // Incorrect password
-                res.status(201).send({text: "Incorrect password"})
-            }
-        })
-    } else {    // No user found
-        res.status(201).send({text: "No user found"})
-    }
+    if (!doc) res.status(201).send({text: "No user found"}) // No user found
+
+
+    var compare = bcrypt.compare(req.body.password, doc.password)
+    if (!compare) res.status(201).send({text: "Incorrect password"}) // Incorrect password
+
+    // Success, send session
+    req.session.userInfo = {
+        id: doc.id, 
+        username: req.body.username
+    };
+    res.status(200).send({username: doc.username, basket: doc.basket})
 })
 
 router.post('/forgot', async (req, res) => {

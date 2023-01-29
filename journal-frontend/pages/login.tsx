@@ -33,15 +33,13 @@ export default function Login() {
         }
         const response = await fetch('/api/user/login', options)
         const respData = await response.json();
-        console.log(response, respData)
+        console.log(response, respData, response.status)
         
         if (response.status == 200) {
             router.reload();
             router.push('/')
         }
         setMessage({message: true, text: respData.text})
-
-        console.log("RESULTS", response)
 
     }
 

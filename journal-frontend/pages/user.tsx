@@ -163,20 +163,20 @@ export default function UserPage() {
                                     {item.type}
                                 </div>
                             </div>
-                            {[...Array(keys.length)].map( (_, i) => {
-                                return(
-                                    <div key={keys[i]} className="w-1/2 flex flex-row align-center">
-                                        <div className="w-full flex flex-col text-center">
+                            <div className="w-1/2 flex flex-row align-center">
+                                {[...Array(keys.length)].map( (_, i) => {
+                                    return(
+                                        <div key={keys[i]} className="w-full flex flex-col text-center">
                                             <div className="w-full font-bold">
-                                            {keys[i]}
+                                                {keys[i]}
                                             </div>
                                             <div className="w-full">
-                                            {item.additional[keys[i]]}
+                                                {item.additional[keys[i]]}
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
+                                    )
+                                })}
+                            </div>
                         </div>
                     )
                 })}

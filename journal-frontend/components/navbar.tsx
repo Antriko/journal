@@ -33,7 +33,7 @@ const Navbar = () => {
                     <span className="sr-only">Open user menu</span>
                     {/* Profile Pic */}
                     <Image width={200} height={200} className="h-8 w-8 rounded-full"
-                        src="http://localhost/api/images/default-icon.png"
+                        src="/default-icon.png"
                         alt="Icon"
                     />
                 </Menu.Button>
