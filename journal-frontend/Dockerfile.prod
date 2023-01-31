@@ -2,6 +2,6 @@ FROM node:16
 
 WORKDIR /journal-frontend
 COPY package*.json /journal-frontend/
-RUN npm install --legacy-peer-deps
+RUN npm install
 ENV PATH /journal-frontend/node_modules/.bin:${PATH}
 COPY . /journal-frontend/

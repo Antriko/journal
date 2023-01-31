@@ -43,11 +43,17 @@ router.post('/login', async(req, res) => {
     let user = mongoose.model('User', userSchema);  // Get database
     var doc = await user.findOne({username: req.body.username});
 
-    if (!doc) res.status(201).send({text: "No user found"}) // No user found
+    if (!doc) {
+        res.status(201).send({text: "No user found"}) // No user found
+        return;
+    }
 
 
     var compare = bcrypt.compare(req.body.password, doc.password)
-    if (!compare) res.status(201).send({text: "Incorrect password"}) // Incorrect password
+    if (!compare) {
+        res.status(201).send({text: "Incorrect password"}) // Incorrect password
+        return;
+    }
 
     // Success, send session
     req.session.userInfo = {
